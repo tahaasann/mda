@@ -56,6 +56,20 @@ Google Workspace MCP'nin preview koşulları nedeniyle ilk halka açık sürümd
 
 Kaynaklar: [Google Workspace MCP kurulumu](https://developers.google.com/workspace/guides/configure-mcp-servers), [Google Workspace Developer Preview koşulları](https://developers.google.com/workspace/preview), [Todoist geliştirici platformu](https://developer.todoist.com/), [Notion MCP](https://www.notion.com/help/notion-mcp).
 
+### Bağlı uygulamalar için MVP işlem sınırı
+
+Aşağıdaki işlemler ürün kapsamı önerisidir; uygulama koduna geçmeden önce her sağlayıcının gerçek MCP araç şeması ve OAuth yetkisi doğrulanır. Model sağlayıcının sunduğu tüm araçları serbestçe çağıramaz; sunucu izin verilen araç adlarını ve argüman sınırlarını uygular.
+
+| Hizmet | İlk sürümde izin verilecek işlem | İlk sürümde kapalı kalacak işlem |
+| --- | --- | --- |
+| Todoist | Kullanıcı onayından sonra görev oluşturma; görev başlığı ve varsa tarih/proje bilgisini onay ekranında gösterme. | Mevcut görevleri/projeleri toplu okuma, düzenleme, tamamlama veya silme. Resmî hosted MCP'nin tam erişim kapsamı bu sınırı güvenilir biçimde desteklemiyorsa Todoist bağlantısı ertelenir. |
+| Notion | Kullanıcının açıkça bağladığı çalışma alanında arama/okuma; kullanıcı onayıyla yeni bir sayfa oluşturma. | Sayfa güncelleme/silme, paylaşım ve izin değiştirme. MCP sunucusunda bu araçlar teknik olarak kapatılamıyorsa bağlantı daha dar bir arayüz doğrulanana kadar ertelenir. |
+| Gmail | Google MCP halka açık yayına uygun hale geldikten sonra arama/okuma ve taslak oluşturma. Taslak gönderilmez. | E-posta gönderme, silme, gelen kutusunu toplu değiştirme. Google MCP yayına uygun olana kadar bağlantı yok. |
+| Google Drive | Google MCP halka açık yayına uygun hale geldikten sonra kullanıcının isteğiyle dosya arama ve seçilen dosya içeriğini okuma. | Toplu tarama, dosya paylaşımı/izin değişikliği, silme veya değiştirme. Google MCP yayına uygun olana kadar bağlantı yok. |
+| Google Calendar | Google MCP halka açık yayına uygun hale geldikten sonra etkinlikleri okuma; yeni etkinliği kullanıcıya gösterip onay aldıktan sonra oluşturma. | Etkinlik silme, mevcut etkinliği değiştirme veya davete otomatik yanıt. Google MCP yayına uygun olana kadar bağlantı yok. |
+
+Tüm yazma eylemleri için onay özeti hedef/konum, içerik ve zaman bilgisini gösterir; onay tek bir eylem ve tek bir hedef için geçerlidir. İstek belirsizse veya MCP yanıtı beklenen şemaya uymuyorsa eylem çalıştırılmaz. E-posta ve belge içeriği güvenilmeyen veri kabul edilir; içerikteki talimatlar araç yetkisini genişletemez.
+
 ## Güvenlik ve veri ilkeleri
 
 - Model sağlayıcı anahtarları mobil uygulamaya konmaz; sunucu tarafında tutulur.
