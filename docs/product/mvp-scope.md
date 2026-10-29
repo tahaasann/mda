@@ -1,6 +1,6 @@
 # Mobil Asistan MVP Kapsamı
 
-**Durum:** Taslak — ilk kapsam gözden geçirmesi
+**Durum:** Kararlar kaydediliyor — MVP kapsamı
 **Ürün hedefi:** Kullanıcının doğal dille isteğini anlattığı, uygun iş akışını arka planda seçen ve gerektiğinde bağlı hizmetlerden kullanıcı izniyle yararlanan kişisel mobil asistan.
 
 **İlk sürüm dilleri:** İngilizce, Fransızca, Almanca, Türkçe ve İspanyolca.
@@ -28,7 +28,13 @@ Yeni bir Android kullanıcısı, kayıt öncesinde ürünün altı ana yeteneği
 5. **Ses notundan görev:** Ses girdisini yazıya çevirme ve görev/eylem maddelerine dönüştürme. Cihazda yerel tanıma desteklenmiyorsa bulut işleme ancak açık kullanıcı onayıyla kullanılabilir.
 6. **Buzdolabı/kiler fotoğrafından tarif:** Fotoğrafta seçilebilen malzemelerden tarif, tahmini hazırlama süresi ve eksik malzeme listesi üretme. Belirsiz tanıma kesin bilgi gibi sunulmaz.
 
-## Onaylanan ilk beş bağlı hizmet adayı
+## Bağlı uygulamalar ve MCP kararı
+
+Bağlı uygulama entegrasyonları için **MCP-first** yaklaşımı seçildi: mobil istemci doğrudan üçüncü taraf servis API'lerine bağlanmaz. Asistan sunucusu, yalnızca izin verilen MCP sunucularına bağlanır; kullanıcı bağlantıları ve OAuth yetkileri hizmet bazında yönetilir.
+
+MCP kullanımı tek başına güvenlik garantisi değildir. Her entegrasyonda kimlik doğrulama, en az yetki, kullanıcı başına token izolasyonu, hassas işlem onayı, iptal/bağlantıyı kesme ve prompt injection savunmaları ayrıca uygulanır. Modelin veya MCP aracının harici sistemde yan etki oluşturduğu işlemler kullanıcıya önceden gösterilir ve açık onay alınır.
+
+Onaylanan ilk beş bağlı hizmet adayı:
 
 - Google Drive
 - Google Calendar
@@ -36,7 +42,19 @@ Yeni bir Android kullanıcısı, kayıt öncesinde ürünün altı ana yeteneği
 - Todoist
 - Notion
 
-Bu adların MVP kapsamına girmesi, her hizmetin tüm yetkilerinin ilk sürümde isteneceği anlamına gelmez. Her bağlantı için ayrı kapsam/izin açıklaması hazırlanır ve yalnızca o yetenek için gerekli en dar izin istenir. Gmail için ilk sürümde gelen kutusu okuma ve e-posta gönderme yerine, kullanıcı bağlamı paylaştığında taslak oluşturma değerlendirilir. Takvim/görev ekleme gibi yazma işlemleri kullanıcı onayı gerektirir. Her hizmetin yayın ve inceleme gereksinimleri entegrasyon başlamadan kontrol edilir.
+MCP sunucusunun resmî olması yeterli yayın onayı sayılmaz. Her sağlayıcı için yayın durumu, kullanım koşulları, OAuth kapsamları, kullanıcı başına yetkilendirme, veri işleme ve iptal akışı entegrasyon öncesi doğrulanır.
+
+| Hizmet | MVP yaklaşımı | Yayın kapısı |
+| --- | --- | --- |
+| Todoist | Resmî hosted MCP sunucusunu prototiple ve entegrasyon adayı olarak değerlendir. İlk ürün akışları yalnızca gerekli araçları sunmalı; MCP'nin geniş yetkileri nedeniyle erişim ve yan etkiler ayrıca sınırlandırılmalı. | OAuth/token akışı, araç listesi, yetki kapsamı, koşullar ve iptal davranışı doğrulanmalı. |
+| Notion | Resmî Notion MCP bağlantısını prototiple ve entegrasyon adayı olarak değerlendir. | Bağlantının üçüncü taraf MCP istemcisi olarak ürünümüzde kullanılmasına ilişkin OAuth, izin, koşul ve veri akışları doğrulanmalı. |
+| Gmail | Google'ın resmî Gmail MCP'si değerlendirme/prototip için incelenebilir. | Google Workspace MCP Developer Preview olarak işaretli. Google, preview özelliklerinin GA'dan önce herkese açık uygulamalara dahil edilemeyebileceğini belirtiyor. GA ve yayın koşulları netleşmeden halka açık MVP'de kullanılamaz. |
+| Google Drive | Google'ın resmî Workspace MCP'si değerlendirme/prototip için incelenebilir. | Gmail ile aynı Developer Preview ve halka açık yayın kapısı geçerli. |
+| Google Calendar | Google'ın resmî Workspace MCP'si değerlendirme/prototip için incelenebilir. | Gmail ile aynı Developer Preview ve halka açık yayın kapısı geçerli. |
+
+Google Workspace MCP'nin preview koşulları nedeniyle ilk halka açık sürümde beş uygulamanın tamamını sunacağımız varsayılmamalı. Bir entegrasyon bu yayın kapısını geçmezse MCP-first kararını koruyarak o bağlantı ertelenir; doğrudan API'ye sessizce geçilmez. Sağlayıcı MCP'si olgunlaştığında güvenlik ve ürün değerlendirmesi yenilenir.
+
+Kaynaklar: [Google Workspace MCP kurulumu](https://developers.google.com/workspace/guides/configure-mcp-servers), [Google Workspace Developer Preview koşulları](https://developers.google.com/workspace/preview), [Todoist geliştirici platformu](https://developer.todoist.com/), [Notion MCP](https://www.notion.com/help/notion-mcp).
 
 ## Güvenlik ve veri ilkeleri
 
@@ -51,7 +69,7 @@ Bu adların MVP kapsamına girmesi, her hizmetin tüm yetkilerinin ilk sürümde
 ## MVP dışı veya sonradan karara bağlanacak kapsam
 
 - iOS yayını (Android ilk sürümden sonra; hesap, giriş ve mağaza kuralları ayrıca doğrulanır).
-- UCP/ACP/MCP entegrasyonları; ticaret ve standart bağlantı desteği olgunlaştığında yeniden değerlendirilir.
+- UCP/ACP ticaret entegrasyonları; bağlantı desteği olgunlaştığında yeniden değerlendirilir. Bağlı uygulamalarda MCP-first yaklaşımı seçilmiştir; her sağlayıcı için yayın uygunluğu ayrıca doğrulanır.
 - Rust tabanlı mobil uygulama veya yerel Rust bileşenleri.
 - WhatsApp kişisel gelen kutusunu okuma; yalnızca kullanıcının açıkça paylaştığı içerik işlenebilir.
 - Market/teslimat uygulamalarında doğrudan sepete ekleme veya satın alma; iş ortağı API erişimi doğrulanmadan vaat edilmez.
