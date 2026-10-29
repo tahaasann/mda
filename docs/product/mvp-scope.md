@@ -3,6 +3,8 @@
 **Durum:** Taslak — ilk kapsam gözden geçirmesi
 **Ürün hedefi:** Kullanıcının doğal dille isteğini anlattığı, uygun iş akışını arka planda seçen ve gerektiğinde bağlı hizmetlerden kullanıcı izniyle yararlanan kişisel mobil asistan.
 
+**İlk sürüm dilleri:** İngilizce, Fransızca, Almanca, Türkçe ve İspanyolca.
+
 ## MVP'nin başarı ölçütü
 
 Yeni bir Android kullanıcısı, kayıt öncesinde ürünün altı ana yeteneğini örneklerle anlayabilmeli; Google veya e-posta ile ücretsiz hesap oluşturduktan sonra yeni bir sohbet başlatabilmeli, önceki oturumlarına dönebilmeli ve asistanın doğru, anlaşılır, güvenli bir çıktı ürettiğini deneyimleyebilmelidir.
@@ -58,7 +60,6 @@ Bu adların MVP kapsamına girmesi, her hizmetin tüm yetkilerinin ilk sürümde
 
 ## Açık kararlar — sonraki adımlar
 
-- İlk sürümün beşinci dili (öneri: İspanyolca; kullanıcı onayı bekliyor).
 - Ücretsiz kota birimi, sıfırlanma dönemi ve Premium limitleri.
 - Ücretli plan fiyatları, deneme süresi ve paywall'ın tam akıştaki yeri.
 - Bağlı beş hizmetin her biri için ilk sürümde desteklenecek somut okuma/yazma işlemleri.
